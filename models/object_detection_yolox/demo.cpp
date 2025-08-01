@@ -104,18 +104,18 @@ public:
             boxes.rowRange(r, r + 1) = *ptr * boxes.rowRange(r, r + 1);
         }
         // get boxes
-        Mat boxes_xyxy(boxes.rows, boxes.cols, CV_32FC1, Scalar(1));
+        Mat boxes_xywh(boxes.rows, boxes.cols, CV_32FC1, Scalar(1));
         Mat scores = dets.colRange(5, dets.cols).clone();
         vector<float> maxScores(dets.rows);
         vector<int> maxScoreIdx(dets.rows);
-        vector<Rect2d> boxesXYXY(dets.rows);
+        vector<Rect2d> boxesXYWH(dets.rows);
 
-        for (int r = 0; r < boxes_xyxy.rows; r++, ptr++)
+        for (int r = 0; r < boxes_xywh.rows; r++, ptr++)
         {
-            boxes_xyxy.at<float>(r, 0) = boxes.at<float>(r, 0) - boxes.at<float>(r, 2) / 2.f;
-            boxes_xyxy.at<float>(r, 1) = boxes.at<float>(r, 1) - boxes.at<float>(r, 3) / 2.f;
-            boxes_xyxy.at<float>(r, 2) = boxes.at<float>(r, 0) + boxes.at<float>(r, 2) / 2.f;
-            boxes_xyxy.at<float>(r, 3) = boxes.at<float>(r, 1) + boxes.at<float>(r, 3) / 2.f;
+            boxes_xywh.at<float>(r, 0) = boxes.at<float>(r, 0) - boxes.at<float>(r, 2) / 2.f;
+            boxes_xywh.at<float>(r, 1) = boxes.at<float>(r, 1) - boxes.at<float>(r, 3) / 2.f;
+            boxes_xywh.at<float>(r, 2) = boxes.at<float>(r, 2);
+            boxes_xywh.at<float>(r, 3) = boxes.at<float>(r, 3);
             // get scores and class indices
             scores.rowRange(r, r + 1) = scores.rowRange(r, r + 1) * dets.at<float>(r, 4);
             double minVal, maxVal;
@@ -123,19 +123,19 @@ public:
             minMaxLoc(scores.rowRange(r, r+1), &minVal, &maxVal, nullptr, &maxIdx);
             maxScoreIdx[r] = maxIdx.x;
             maxScores[r] = float(maxVal);
-            boxesXYXY[r].x = boxes_xyxy.at<float>(r, 0);
-            boxesXYXY[r].y = boxes_xyxy.at<float>(r, 1);
-            boxesXYXY[r].width = boxes_xyxy.at<float>(r, 2);
-            boxesXYXY[r].height = boxes_xyxy.at<float>(r, 3);
+            boxesXYWH[r].x = boxes_xywh.at<float>(r, 0);
+            boxesXYWH[r].y = boxes_xywh.at<float>(r, 1);
+            boxesXYWH[r].width = boxes_xywh.at<float>(r, 2);
+            boxesXYWH[r].height = boxes_xywh.at<float>(r, 3);
         }
 
         vector<int> keep;
-        NMSBoxesBatched(boxesXYXY, maxScores, maxScoreIdx, this->confThreshold, this->nmsThreshold, keep);
+        NMSBoxesBatched(boxesXYWH, maxScores, maxScoreIdx, this->confThreshold, this->nmsThreshold, keep);
         Mat candidates(int(keep.size()), 6, CV_32FC1);
         int row = 0;
         for (auto idx : keep)
         {
-            boxes_xyxy.rowRange(idx, idx + 1).copyTo(candidates(Rect(0, row, 4, 1)));
+            boxes_xywh.rowRange(idx, idx + 1).copyTo(candidates(Rect(0, row, 4, 1)));
             candidates.at<float>(row, 4) = maxScores[idx];
             candidates.at<float>(row, 5) = float(maxScoreIdx[idx]);
             row++;
