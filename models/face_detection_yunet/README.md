@@ -7,7 +7,8 @@ Notes:
 - Model source: [here](https://github.com/ShiqiYu/libfacedetection.train/blob/a61a428929148171b488f024b5d6774f93cdbc13/tasks/task1/onnx/yunet.onnx).
 - This model can detect **faces of pixels between around 10x10 to 300x300** due to the training scheme.
 - For details on training this model, please visit https://github.com/ShiqiYu/libfacedetection.train.
-- This ONNX model has fixed input shape, but OpenCV DNN infers on the exact shape of input image. See https://github.com/opencv/opencv_zoo/issues/44 for more information.
+- `face_detection_yunet_2026may.onnx` is the default model with **dynamic input shape** (symbolic `height` and `width` dims), compatible with OpenCV 5.x ONNX Runtime engine (`OPENCV_FORCE_DNN_ENGINE=4`). It is re-exported from `face_detection_yunet_2023mar.onnx` with static H/W dims replaced by symbolic dims, allowing inference at any resolution without resizing.
+- `face_detection_yunet_2023mar.onnx` has fixed input shape. OpenCV 4.x DNN infers on the exact shape of input image, but the ONNX Runtime engine in OpenCV 5.x requires dynamic dims for variable input sizes. See https://github.com/opencv/opencv_zoo/issues/44 for more information.
 - `face_detection_yunet_2023mar_int8bq.onnx` represents the block-quantized version in int8 precision and is generated using [block_quantize.py](../../tools/quantize/block_quantize.py) with `block_size=64`.
 - Paper source: [Yunet: A tiny millisecond-level face detector](https://link.springer.com/article/10.1007/s11633-023-1423-y).
 
