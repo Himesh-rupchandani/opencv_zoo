@@ -31,3 +31,14 @@ python demo.py
 python demo.py --input /path/to/image -v
 # get help regarding various parameters
 python demo.py --help
+### Example outputs
+
+![lpd](./example_outputs/lpd_yunet_demo.gif)
+
+## License
+
+All files in this directory are licensed under [Apache 2.0 License](./LICENSE)
+
+## Reference
+
+- https://github.com/ShiqiYu/libfacedetection.train
