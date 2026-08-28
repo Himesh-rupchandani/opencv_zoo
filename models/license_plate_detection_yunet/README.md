@@ -42,3 +42,15 @@ All files in this directory are licensed under [Apache 2.0 License](./LICENSE)
 ## Reference
 
 - https://github.com/ShiqiYu/libfacedetection.train
+
+### Example outputs
+
+![lpd](./example_outputs/lpd_yunet_demo.gif)
+
+## License
+
+All files in this directory are licensed under [Apache 2.0 License](./LICENSE)
+
+## Reference
+
+- https://github.com/ShiqiYu/libfacedetection.train

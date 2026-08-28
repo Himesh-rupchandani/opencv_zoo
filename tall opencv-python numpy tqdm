@@ -1,0 +1,33 @@
+[1mdiff --git a/models/license_plate_detection_yunet/README.md b/models/license_plate_detection_yunet/README.md[m
+[1mindex df1cbce..72d1b82 100644[m
+[1m--- a/models/license_plate_detection_yunet/README.md[m
+[1m+++ b/models/license_plate_detection_yunet/README.md[m
+[36m@@ -7,6 +7,19 @@[m [mPlease note that the model is trained with Chinese license plates, so the detect[m
+ **Note**:[m
+ - `license_plate_detection_lpd_yunet_2023mar_int8bq.onnx` represents the block-quantized version in int8 precision and is generated using [block_quantize.py](../../tools/quantize/block_quantize.py) with `block_size=64`.[m
+ [m
+[32m+[m[32mResults of accuracy evaluation with [tools/eval](../../tools/eval).[m
+[32m+[m
+[32m+[m[32mProtocol: CCPD official detection metric (Xu et al., ECCV 2018). One box per image is correct iff IoU > 0.7. `Overall` is precision on the union of the six official test subsets (DB, Blur, FN, Rotate, Tilt, Challenge). LPD-YuNet does not publish a claimed accuracy; numbers below are measured with OpenCV DNN.[m
+[32m+[m
+[32m+[m[32m| Models          | Overall | DB  | Blur | FN  | Rotate | Tilt | Challenge |[m
+[32m+[m[32m| --------------- | ------- | --- | ---- | --- | ------ | ---- | --------- |[m
+[32m+[m[32m| LPD-YuNet       | TBD     | TBD | TBD  | TBD | TBD    | TBD  | TBD       |[m
+[32m+[m[32m| LPD-YuNet block | TBD     | TBD | TBD  | TBD | TBD    | TBD  | TBD       |[m
+[32m+[m[32m| LPD-YuNet quant | TBD     | TBD | TBD  | TBD | TBD    | TBD  | TBD       |[m
+[32m+[m
+[32m+[m[32m*: 'quant' stands for 'quantized'.[m
+[32m+[m[32m**: 'block' stands for 'blockwise quantized'.[m
+[32m+[m
+ ## Demo[m
+ [m
+ Run the following command to try the demo:[m
+[36m@@ -18,8 +31,6 @@[m [mpython demo.py[m
+ python demo.py --input /path/to/image -v[m
+ # get help regarding various parameters[m
+ python demo.py --help[m
+[31m-```[m
+[31m-[m
+ ### Example outputs[m
+ [m
+ ![lpd](./example_outputs/lpd_yunet_demo.gif)[m
